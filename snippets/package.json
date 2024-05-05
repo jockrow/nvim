@@ -1,0 +1,51 @@
+{
+	"name": "nvim-snippets",
+	"author": "jockrow",
+	"engines": {
+		"vscode": "^1.11.0"
+	},
+	"contributes": {
+		"snippets": [
+			{
+				"language": "bat",
+				"path": "./bat.json"
+			},
+			{
+				"language": "css",
+				"path": "./css.json"
+			},
+			{
+				"language": "java",
+				"path": "./java.json"
+			},
+			{
+				"language": "javascript",
+				"path": "./javascript.json"
+			},
+			{
+				"language": "lua",
+				"path": "./lua.json"
+			},
+			{
+				"language": "python",
+				"path": "./python.json"
+			},
+			{
+				"language": "sql",
+				"path": "./sql.json"
+			},
+			{
+				"language": "typescript",
+				"path": "./typescript.json"
+			},
+			{
+				"language": "vb",
+				"path": "./vb.json"
+			},
+			{
+				"language": "vim",
+				"path": "./vim.json"
+			}
+		]
+	}
+}

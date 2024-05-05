@@ -1,0 +1,15 @@
+{
+	"Number Bullets": {
+		"prefix": "numBullets",
+		"body": [
+			"pre { ",
+			"\tcounter-reset: cuenta-parrafos;",
+			"}",
+			"",
+			"p:before { ",
+			"\tcontent: counter(cuenta-parrafos)\". \";",
+			"\tcounter-increment: cuenta-parrafos; ",
+			"}"
+		]
+	}
+}

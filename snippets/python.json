@@ -1,0 +1,15 @@
+{
+	"ExecFileOld": {
+		"prefix": "ExecFileOld",
+		"body": "exec(open(\"${0:<#= getCurrentPath() #>}\").read())",
+		"description": "verificar si se puede invocar getCurrentPath"
+	},
+	"ExecFile": {
+		"prefix": "execFile",
+		"body": "exec(open(\"${1:path}\").read())"
+	},
+	"Print": {
+		"prefix": "print",
+		"body": "print(f\"${1:var}: {$1}\")"
+	}
+}

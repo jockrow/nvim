@@ -1,0 +1,109 @@
+{
+	"Buffer": {
+		"prefix": "buffer",
+		"body": [
+			"int ch;",
+			"String strBuffer = new String(\"\");",
+			"String strRoute = new String(\"\");",
+			"BufferedReader bfRead = new BufferedReader(new FileReader(strRoute));",
+			"while((ch = bfRead.read()) != -1){",
+			"\tstrBuffer.append((char)ch);",
+			"}",
+			"strContent = strBuffer.toString();",
+			"bfRead.close();",
+			"",
+			"BufferedWriter bfWrite = new BufferedWriter(new FileWriter(strRoute));",
+			"bfWrite.write(strContent);",
+			"bfWrite.close();"
+		],
+		"description": "Create, loop, write, and close Buffer"
+	},
+	"Command": {
+		"prefix": "command",
+		"body": [
+			"Process p = Runtime.getRuntime().exec(\"cmd /c start .\\\\scripts\\\\call.bat\");",
+			"p.waitFor();"
+		]
+	},
+	"Class": {
+		"prefix": "class",
+		"body": [
+			"class ${1:tempCodeRunnerFile}{",
+			"\tpublic static void main(String[] args){",
+			"\t\tSystem.out.println(\"${2:message}\");",
+			"\t}",
+			"}"
+		]
+	},
+	"Date": {
+		"prefix": "date",
+		"body": [
+			"import java.util.Date;",
+			"import java.text.DateFormat;",
+			"import java.text.SimpleDateFormat;",
+			"",
+			"private String getDateTime() {",
+			"\tDateFormat dateFormat = new SimpleDateFormat(\"yyyy/MM/dd HH:mm:ss\");",
+			"\tDate date = new Date();",
+			"\treturn dateFormat.format(date);",
+			"}"
+		],
+		"description": "Create method getDatetime and return with format yyyy/MM/dd HH:mm:ss"
+	},
+	"IfElse": {
+		"prefix": "ifelse",
+		"body": [
+			"if($1){",
+			"\t$2",
+			"}",
+			"else{",
+			"\t$3",
+			"}"
+		]
+	},
+	"For": {
+		"prefix": "for",
+		"body": [
+			"for(int ${1:i}=${2:0}; $1<${3:to}; $1++){",
+			"\t$0",
+			"}"
+		]
+	},
+	"ForIn": {
+		"prefix": "forIn",
+		"body": [
+			"for(${1:Type} ${2:var}: ${3:List}){",
+			"\t$0",
+			"}"
+		]
+	},
+	"PrintLine": {
+		"prefix": "sysout",
+		"body": "System.out.println(\"${1:var}:\" + $1);"
+	},
+	"SystemProperties": {
+		"prefix": "systemProperties",
+		"body": "System.getProperties().list(System.out);"
+	},
+	"Vector": {
+		"prefix": "vector",
+		"body": [
+			"Vector ${1:vt} = new Vector();",
+			"$1.add(\"${2:value1}\");",
+			"$1.add(\"${3:value2}\");",
+			"$1.add(\"${4:value3}\");",
+			"",
+			"for(int i=0; i<$1.size(); i++){",
+			"\tprint(\"value:\" + $1.elementAt(i));",
+			"}"
+		]
+	},
+	"While": {
+		"prefix": "while",
+		"body": [
+			"while($1){",
+			"  $0",
+			"}"
+		]
+	}
+}

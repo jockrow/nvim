@@ -1,0 +1,6 @@
+{
+	"Print": {
+		"prefix": "echo",
+		"body": "echo \"${1:var}:\" . $1"
+	}
+}

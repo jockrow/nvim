@@ -1,0 +1,13 @@
+tt.*
+.tests
+.luarc.json
+doc/tags
+debug
+.repro
+foo.*
+*.log
+*.old
+data
+.vimrc
+lazy-lock.json
+test/

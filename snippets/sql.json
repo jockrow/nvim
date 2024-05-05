@@ -1,0 +1,357 @@
+{
+	// "DELETE": {
+	// 	"prefix": "delete",
+	// 	"body": [
+	// 		"DELETE",
+	// 		"FROM ${1:table}$0;",
+	// 	]
+	// },
+	// "INSERT": {
+	// 	"prefix": "insert",
+	// 	"body": [
+	// 		"INSERT INTO ${1:table}",
+	// 		"(${2:fields})",
+	// 		"VALUES (${3:values})$0;"
+	// 	]
+	// },
+	"MySqlUpdateJoin": {
+		"prefix": "mySqlUpdateJoin",
+		"body": [
+			"UPDATE ${2:updateTable} A",
+			"\tINNER JOIN ${1:parameterTable} P ON A.${3:joinFieldParameterTable}=P.${4:joinFieldUpdateTable}",
+			"\tSET A.${5:fieldUpdate} = P.${6:fieldParameter}",
+			"\tWHERE ${7:condition}"
+		]
+	},
+	"OracleDebug": {
+		"prefix": "oracleDebug",
+		"body": "dbms_output.put_line('${1:variable}:' || $1)$0;",
+	},
+	"OracleFindIntoSp": {
+		"prefix": "oracleFindIntoSp",
+		"body": [
+			"SELECT *",
+			"FROM ALL_source",
+			// TODO: VERIFICAR SI SE PUEDE INVOCAR UNA FUNCION JAVASCRIPT
+			"WHERE UPPER(text) LIKE '%${1:stringToFind}%'$0;"
+		],
+		"description": "Oracle:Find Expression into SP"
+	},
+	"OracleFindTables": {
+		"prefix": "oracleFindTables",
+		"body": [
+			"SELECT * FROM SYS.DBA_TABLES WHERE UPPER(TABLE_NAME) LIKE '%${1:tableName}%'$0;"
+		],
+		"description": "Oracle:Find table name"
+	},
+	"OracleFindWholeName": {
+		"prefix": "oracleFindWholeName",
+		"body": [
+			"SELECT owner",
+			"\t|| '.'",
+			"\t|| NAME",
+			"\t|| ' ('",
+			"\t|| DECODE (TYPE,",
+			"\t\t\t\t'MATERIALIZED VIEW', 'MV',",
+			"\t\t\t\t'DIMENSION', 'DIM',",
+			"\t\t\t\t'EVALUATION CONTXT', 'EVALCTXT',",
+			"\t\t\t\t'PACKAGE BODY', 'PKGBDY',",
+			"\t\t\t\t'CUBE.DIMENSION', 'CUBE.DIM',",
+			"\t\t\t\tTYPE",
+			"\t\t\t  )",
+			"\t|| ')' objdep,",
+			"\t referenced_name",
+			"\t|| ' ('",
+			"\t|| DECODE (referenced_type,",
+			"\t\t\t\t'EVALUATION CONTXT', 'EVALCTXT',",
+			"\t\t\t\t'NON-EXISTENT CONTXT', 'NO-EXIST',",
+			"\t\t\t\t'PACKAGE BODY', 'PKGBDY',",
+			"\t\t\t\t'CUBE.DIMENSION', 'CUBE.DIM',",
+			"\t\t\t\treferenced_type",
+			"\t\t\t  )",
+			"\t|| ')' refr",
+			"FROM dba_dependencies",
+			"WHERE owner = '${1:owner}'",
+			"AND referenced_name = '${2:wholeNameObject}'",
+			"ORDER BY objdep$0;"
+		],
+		"description": "Oracle:Find Whole Name"
+	},
+	"OracleGetBodyObject": {
+		"prefix": "oracleGetBodyObject",
+		"body": [
+			"SELECT *",
+			"FROM ALL_SOURCE",
+			"WHERE NAME = '${1:object}'$0;"
+		]
+	},
+	"OracleGetTime": {
+		"prefix": "oracleGetTime",
+		"body": [
+			"TO_CHAR(${1:SYSDATE},'HH24:MI:SS') AS TIME_$1",
+		]
+	},
+	"OracleGetYear": {
+		"prefix": "oracleGetYear",
+		"body": [
+			"SELECT TO_CHAR(SYSDATE, 'YYYY') AS YEAR",
+			"FROM DUAL$0;"
+		]
+	},
+	"OracleSelectCase": {
+		"prefix": "OracleSelectCase",
+		"body": [
+			"SELECT case ${2:field}",
+			"\tWHEN '${4:option1}' THEN '${5:result1}'",
+			"\tWHEN '${6:option2}' THEN '${7:result2}'",
+			"\tWHEN '${6:option3}' THEN '${9:result3}'",
+			"\tEND AS case ${3:field}",
+			"FROM ${1:table}$0;"
+		]
+	},
+	"OracleUpdateJoin": {
+		"prefix": "oracleUpdateJoin",
+		"body": [
+			"MERGE INTO ${2:updateTable} TARGET",
+			"USING",
+			"(",
+			"\tSELECT A.${7:pkField}, A.${5:updateField}",
+			"\tFROM $2 A",
+			"\tINNER JOIN ${1:tablaParametro} P ON P.${3:fieldParamJoin1} = A.${4:fieldParamJoin2}",
+			"\tWHERE ${6:condition}",
+			") ta ON (ta.$7 = TARGET.$7)",
+			"WHEN MATCHED THEN UPDATE",
+			"\tSET TARGET.$5 = ${8:newValue}$0;"
+		]
+	},
+	"SqlServerCase": {
+		"prefix": "sqlServerCase",
+		"body": [
+			"CASE",
+			"\tWHEN ${1:field}=1 THEN '${2:field}1'",
+			"\tWHEN $1=2 THEN '${2:field}2'",
+			"\tWHEN $1=3 THEN '${2:field}3'",
+			"END AS ${3:alias}"
+		]
+	},
+	"SqlServerConcatRows": {
+		"prefix": "sqlServerConcatRows",
+		"body": [
+			"SELECT DISTINCT MAIN.$2",
+			", (",
+			"\tSELECT ${3:nameConcatField}",
+			"\tFROM ${1:table} CVALUES",
+			"\tWHERE CVALUES.${2:nameMatchColumn} = MAIN.$2",
+			"\tORDER BY 1",
+			"\tFOR XML PATH ('')",
+			") ${4:concatValues}",
+			"FROM $1 MAIN"
+		]
+	},
+	"SqlServerCountRowsTables": {
+		"prefix": "sqlServerCountRowsTables",
+		"body": [
+			"create table #tempcount (tablename nvarchar(128), record_count bigint)",
+			"EXEC sp_msforeachtable 'insert #tempcount select ''?'', count(*) from ? with (nolock)'",
+			"select * from #tempcount"
+		]
+	},
+	"SqlServerCursor": {
+		"prefix": "sqlServerCursor",
+		"body": [
+			"SET NOCOUNT ON",
+			"",
+			"--drop table $2",
+			"CREATE TABLE ${2:tablaParametrizada}(",
+			"\t[idParametro] [numeric](18, 0) IDENTITY(1,1) NOT NULL,",
+			"\t[${3:campoParametrizado1}] INT NOT NULL",
+			")",
+			"",
+			"INSERT INTO $2 ($3) VALUES(1)",
+			"INSERT INTO $2 ($3) VALUES(2)",
+			"INSERT INTO $2 ($3) VALUES(3)",
+			"INSERT INTO $2 ($3) VALUES(4)",
+			"INSERT INTO $2 ($3) VALUES(5)",
+			"",
+			"DECLARE @$3 varchar(50), @${4:campoParametrizado2} varchar(50)",
+			"",
+			"IF (SELECT CURSOR_STATUS('global','$1')) >= 0",
+			"BEGIN",
+			"\tCLOSE $1",
+			"\tDEALLOCATE $1",
+			"END",
+			"",
+			"DECLARE ${1:cursorito} CURSOR FOR",
+			"SELECT $3, $4",
+			"FROM $2 WITH(NOLOCK)",
+			"",
+			"OPEN $1",
+			"",
+			"FETCH NEXT FROM $1",
+			"INTO @$3, @$4",
+			"",
+			"WHILE @@FETCH_STATUS = 0",
+			"BEGIN",
+			"\tPRINT '$3: ' + @$3 + ',  $4:' +  @$4",
+			"",
+			"\tUPDATE ${5:tablaActualizar}",
+			"\tSET ${6:campoActualizar}= ${9:valor}",
+			"\tWHERE ${7:condicion1} = @$3",
+			"\t\tAND ${8:condicion2} = @$4",
+			"",
+			"\tFETCH NEXT FROM $1",
+			"\tINTO @$3, @$4",
+			"END",
+			"",
+			"CLOSE $1",
+			"DEALLOCATE $1"
+		]
+	},
+	"SqlServerDeleteJoin": {
+		"prefix": "sqlServerDeleteJoin",
+		"body": [
+			"DELETE D",
+			"--SELECT H.${4:FieldValidation}, D.*",
+			"FROM ${1:TableCompare} H",
+			"INNER JOIN ${2:FieldValidation} D ON D.${3:FieldJoin} = H.$3",
+			"WHERE H.$4 ${5:Condition}"
+		]
+	},
+	"SqlServerCompare2Registers": {
+		"prefix": "sqlServerCompare2Registers",
+		"body": [
+			"SELECT CURR.${1:field}, (SELECT TOP 1 ANT.$1",
+			"\tFROM ${2:table} ANT",
+			"\tWHERE CURR.$1 > ANT.$1",
+			"\tORDER BY ANT.$1 DESC)",
+			"FROM  $2 CURR"
+		]
+	},
+	"SqlServerGetAllIndex": {
+		"prefix": "sqlServerGetAllIndex",
+		"body": [
+			"SELECT t.name as tablename, i.*",
+			"FROM sys.indexes i, sys.tables t",
+			"WHERE i.object_id = t.object_id",
+			"\tAND i.type_desc = 'NONCLUSTERED'"
+		]
+	},
+	"SqlServerGetPk": {
+		"prefix": "sqlServerGetPk",
+		"body": [
+			"SELECT  i.name AS IndexName,",
+			"\tOBJECT_NAME(ic.OBJECT_ID) AS TableName,",
+			"\tCOL_NAME(ic.OBJECT_ID,ic.column_id) AS ColumnName",
+			"FROM sys.indexes AS i",
+			"INNER JOIN sys.index_columns AS ic ON  i.OBJECT_ID = ic.OBJECT_ID",
+			"\tAND i.index_id = ic.index_id",
+			"WHERE   i.is_primary_key = 1",
+			"\tAND OBJECT_NAME(ic.OBJECT_ID) = '${1:tableName}'"
+		]
+	},
+	"SqlServerGetPkError": {
+		"prefix": "sqlServerGetPkError",
+		"body": [
+			"SELECT DISTINCT CAST(${2:pk1} AS VARCHAR(50)) + '_' + CAST(${3:pk2} AS VARCHAR(50)), COUNT(1)",
+			"FROM ${1:Table}",
+			"GROUP BY CAST($2 AS VARCHAR(50)) + '_' + CAST($3 AS VARCHAR(50))",
+			"HAVING COUNT(1) > 1",
+			"ORDER BY 2 DESC, 1"
+		]
+	},
+	"SqlServerMassiveDataReport": {
+		"prefix": "sqlServerMassiveDataReport",
+		"body": [
+			"SET NOCOUNT ON",
+			"",
+			"--drop table #parametros",
+			"CREATE TABLE #parametros(",
+			"\t[idParametro] [numeric](18, 0) IDENTITY(1,1) NOT NULL,",
+			"\t[${4:idTablaActualizar}] INT NOT NULL",
+			")",
+			"",
+			"INSERT INTO #parametros ($4) VALUES(1)",
+			"INSERT INTO #parametros ($4) VALUES(2)",
+			"INSERT INTO #parametros ($4) VALUES(3)",
+			"INSERT INTO #parametros ($4) VALUES(4)",
+			"INSERT INTO #parametros ($4) VALUES(5)",
+			"",
+			"",
+			"DECLARE @maxRegistro AS NUMERIC",
+			"DECLARE @inicial AS INT",
+			"DECLARE @final AS INT",
+			"DECLARE @rango AS NUMERIC",
+			"DECLARE @contador AS NUMERIC",
+			"",
+			"SET @rango = ${5:rango}",
+			"SET @contador = 1",
+			"",
+			"SELECT @maxRegistro = MAX(idParametro) + 1 FROM #parametros",
+			"PRINT '@maxRegistro:' + CAST(@maxRegistro AS VARCHAR(10))",
+			"",
+			"-- TODO: report",
+			"-- CREATE TABLE ${7:#reporte} (",
+			"-- ${8:field1} int",
+			"-- , ${9:field2} varchar(50)",
+			"-- )",
+			"",
+			"SET @inicial = ${6:registroInicial}",
+			"WHILE @inicial < @maxRegistro",
+			"BEGIN",
+			"\tSET @final = @inicial + @rango",
+			"\tPRINT(cast(@contador as varchar(10)) + '. inicial:' + CAST(@inicial AS VARCHAR(10)) + ', final:' + cast(@final as varchar(10)))",
+			"\t",
+			"\tUPDATE P",
+			"\t-- TODO:choose update to manipulate or select to report",
+			"\tSET P.${2:campoActualizar} = ${3:valorActualizar}",
+			"\t-- INSERT INTO #reporte",
+			"\t--SELECT P.$4, P.$2",
+			"\tFROM #parametros T WITH(NOLOCK)",
+			"\tINNER JOIN ${1:tablaActualizar} P WITH(NOLOCK) ON P.$4=T.$4",
+			"\tWHERE T.idParametro BETWEEN @inicial AND @final",
+			"\t--AND P.$2 = 0",
+			"",
+			"\tSET @inicial = @inicial + @rango + 1",
+			"\tSET @contador = @contador + 1",
+			"END",
+			"",
+			"-- TODO: report",
+			"-- SELECT * FROM $7$0"
+		],
+		"description": "SqlServer: Export to Temporal table when is Massive Data"
+	},
+	"SqlServerRollBack": {
+		"prefix": "sqlServerRollBack",
+		"body": [
+			"BEGIN TRY",
+			"\tBEGIN TRANSACTION",
+			"\t\t${1:code}",
+			"\tCOMMIT",
+			"END TRY",
+			"BEGIN CATCH",
+			"\tIF @@TRANCOUNT > 0",
+			"\t\tROLLBACK",
+			"END CATCH"
+		]
+	},
+	"SqlServerUpdateJoin": {
+		"prefix": "sqlServerUpdateJoin",
+		"body": [
+			"UPDATE A",
+			"SET A.${5:campoActualizar} = P.${6:campoParametro}",
+			"--SELECT A.$3, A.$5",
+			"FROM ${1:tablaParametro} P WITH(NOLOCK)",
+			"INNER JOIN ${2:tablaActualizar} A WITH(NOLOCK) ON A.${3:campoTablaParametroRelacion}=P.${4:campoTablaActualizarRelacion}",
+			"WHERE ${7:condicion}"
+		],
+		"description": "SqlServerUpdateJoin"
+	}
+}
+/* 
+// DONE:Verificar que la raiz y el prefijo sean iguales diferenciando la primera mayúscula mminúscula
+// DONE:Format file
+// DONE:Check [ ]+"
+// DONE:Move Function complete to Base de Conocimiento ejemplo:
+	SqlServerRegExReplace
+	SqlServerSelectLimit
+ */

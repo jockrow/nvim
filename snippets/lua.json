@@ -1,0 +1,6 @@
+{
+	"Print": {
+		"prefix": "print",
+		"body": "print(\"${1:var}:\" .. $1)"
+	}
+}

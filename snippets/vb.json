@@ -1,0 +1,28 @@
+{
+	"CloseTag": {
+		"prefix": "closeTag",
+		"body": [
+			"<%= chr(62) %>"
+		],
+		"description": "print '>'"
+	},
+	"Exception": {
+		"prefix": "exception",
+		"body": [
+			"On Error Resume Next",
+		  "\t${1:' TODO: enter code}",
+			"If err <> 0 Then",
+		  "\tResponse.Write \"Error Occurred<br>\" + err.Description",
+			"End If",
+			""
+		],
+		"description": "Controlling Exception"
+	},
+	"OpenTag": {
+		"prefix": "openTag",
+		"body": [
+			"<%= chr(60) %>"
+		],
+		"description": "print '<'"
+	},
+}

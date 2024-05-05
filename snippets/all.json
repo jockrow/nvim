@@ -1,0 +1,6 @@
+{
+	"Cambiame": {
+		"prefix": "cambiame",
+		"body": "print(\"${1:expression}: $1\")$0"
+	}
+}

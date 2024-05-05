@@ -1,0 +1,14 @@
+{
+	"Alert": {
+		"prefix": "alert",
+		"body": "alert(`$1:\\${$1}`);"
+	},
+	"Debug": {
+		"prefix": "debug",
+		"body": "console.debug(`$1:\\${$1}`);"
+	},
+	"Log": {
+		"prefix": "log",
+		"body": "console.log(`$1:\\${$1}`);"
+	}
+}
