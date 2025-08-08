@@ -11,10 +11,7 @@ keyset("i", "JK", "<Esc>")
 keyset("v", "JK", "<Esc>")
 
 -- Restore default keys vim
-keyset("n", '"', '"')
-keyset("v", "x", "x")
-keyset("n", "<leader>m", "")
-keyset("n", "<leader>,", "<cmd>Telescope buffers show_all_buffers=true<cr>", { desc = "Switch Buffer" })
+keyset("n", "<leader>m", "", { silent = true, desc = "Mappings for Matching" })
 
 keyset("n", "<leader>bf", ":call Differences()<cr>", { silent = true, desc = "Compare differences buffers" })
 keyset("n", "<leader>br", ":e#<cr>", { silent = true, desc = "Reopen closed buffer" })
@@ -33,14 +30,6 @@ keyset("t", "<C-w>l", "<Esc><C-\\><C-n><C-w>l")
 keyset("t", "<Esc>", "<C-\\><C-n>")
 keyset("t", "<C-w>p", "<C-\\><C-n><C-w>p")
 keyset("t", "<C-w><C-w>", "<Esc><C-\\><C-n><C-w>w")
-
--- Terminal
-keyset("n", "<leader>ft", function()
-  require("lazyvim.util").float_term(nil, { cwd = require("lazyvim.util").get_root() })
-end, { desc = "Terminal (root dir)" })
-keyset("n", "<leader>fT", function()
-  require("lazyvim.util").float_term()
-end, { desc = "Terminal (cwd)" })
 
 -- Resize
 keyset("n", "<A-Left>", ":vertical resize -2<CR>", { silent = true })
@@ -63,8 +52,9 @@ keyset("n", "<C-h>", ":%s/\\c\\V/g<left><left>", { desc = "Replace a expresion" 
 keyset("v", "<C-h>", ":s/\\c\\V", { desc = "Replace a expresion" })
 -- Code
 keyset("n", "grr", ":Trouble lsp_references<CR>", { desc = "My References" })
-keyset("n", "<leader>cx", ":call ExeCode()<cr>", { desc = "Execute Code" })
-keyset("i", "<leader>cx", "<Esc>:call ExeCode()<cr>", { desc = "Execute Code" })
+keyset("n", "<leader>cx", ":call ExeCode()<cr>", { desc = "Execute Code", silent = true })
+-- WARNING: Conflict when press the first space in Insert Mode
+-- keyset("i", "<leader>cx", "<Esc>:call ExeCode()<cr>", { desc = "Execute Code", silent = true })
 
 -- Action lines
 keyset("n", "yil", "^yg_", { desc = "Copy inner line" })
@@ -107,6 +97,10 @@ keyset("n", "<leader>De", function()
 end, { desc = "Directory Open with File Explorer" })
 keyset("n", "<leader>Dc", ":exe \"cd \" . expand('%:p:h')|pwd<CR>", { desc = "Directory Change to current" })
 
+-- Telescope
+keyset("n", "<s-Up>", "<cmd>Telescope command_history<cr>", { desc = "Command History" })
+keyset("i", "<s-Up>", "<Esc><cmd>Telescope command_history<cr>", { desc = "Command History" })
+
 keyset(
   "n",
   "<C-k>m",
@@ -132,3 +126,4 @@ vim.api.nvim_set_keymap(
   ":lua require('IDE').DebugAddWatchVisual()<cr>",
   { silent = true, desc = "Add Watch" }
 )
+MiniMap.refresh()

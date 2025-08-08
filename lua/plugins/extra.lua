@@ -54,10 +54,12 @@ return {
   -- https://yeripratama.com/blog/customizing-coc-explorer/ --Config Doc
   -- CocInstall coc-docker
   -- CocInstall coc-explorer
-  -- CocInstall coc-markdown-preview-enhanced
   -- CocInstall coc-marketplace
   -- CocInstall coc-webview
   -- CocInstall coc-tsserver
+  --
+  -- CocInstall coc-webview
+  -- CocInstall coc-markdown-preview-enhanced
 
   { "neoclide/coc.nvim" },
   --preview code results
@@ -89,46 +91,6 @@ return {
       vim.g.colorizer_auto_filetype = "css,html,json"
       vim.g.colorizer_disable_bufleave = 1
     end,
-  },
-
-  {
-    "epwalsh/obsidian.nvim",
-    enabled = true,
-    version = "*", -- recommended, use latest release instead of latest commit
-    lazy = true,
-    ft = "markdown",
-    -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
-    -- event = {
-    --   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
-    --   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
-    --   "BufReadPre path/to/my-vault/**.md",
-    --   "BufNewFile path/to/my-vault/**.md",
-    -- },
-    dependencies = {
-      -- Required.
-      "nvim-lua/plenary.nvim",
-
-      -- see below for full list of optional dependencies 👇
-    },
-    opts = {
-      disable_frontmatter = true,
-      workspaces = {
-        {
-          name = "Migration",
-          path = "~/Documents/Obsidian/Migration/",
-        },
-        {
-          name = "technology",
-          path = "~/Documents/Obsidian/technology/",
-        },
-        {
-          name = "Diligencias",
-          path = "~/Documents/Obsidian/Diligencias/",
-        },
-      },
-
-      -- see below for full list of options 👇
-    },
   },
 
   --highlight regular expressions
@@ -166,17 +128,15 @@ return {
             error = "DiagnosticFloatingError",
             warn = "DiagnosticFloatingWarn",
             info = "DiagnosticFloatingInfo",
-            hint = "DiagnosticFloatingHint",
+            hint = "DiasnosticFloatingHint",
           }),
         },
         symbols = {
           encode = map.gen_encode_symbols.dot("4x2"),
         },
         window = {
-          side = "right",
-          width = 10, -- set to 1 for a pure scrollbar :)
-          winblend = 50,
-          show_integration_count = true,
+          winblend = 100,
+          -- side = "left", --a la izquierda da conflicto con gutter
         },
       })
     end,
@@ -272,7 +232,12 @@ return {
   -- C# for razor files
   { "jlcrochet/vim-razor" },
 
-  -- Preview images
+  -- -- Preview images
+
+  -- { "nvim-lua/popup.nvim" },
+  -- Plug 'nvim-lua/plenary.nvim'
+  { "nvim-telescope/telescope.nvim" },
+  -- { "nvim-telescope/telescope-media-files.nvim" },
   {
     "nvim-telescope/telescope-media-files.nvim",
     init = function()
@@ -291,8 +256,6 @@ return {
       })
     end,
   },
-
-  -- { "nvim-lua/popup.nvim" },
 
   -- {
   --   "edluffy/hologram.nvim",
@@ -313,6 +276,7 @@ return {
   -- Multiple cursors: almost refactor select with <c-n> and substitute cuando se usa por primera vez
   -- BUG:conflicto con resize cuando se usa por primera vez
   { "mg979/vim-visual-multi" },
+  -- { "terryma/vim-multiple-cursors" },
   -- debug cuando se usa por primera vez
   --TODO:REMAPEAR COMO DEBE SER cuando se usa por primera vez
   -- { "puremourning/vimspector" }, cuando se usa por primera vez
